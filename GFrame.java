@@ -1,58 +1,60 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.border.LineBorder;
 
 public class GFrame extends JFrame {
-    private JTextField nameField1, nameField2, scoreField1, scoreField2;
-    private JLabel winnerLabel;
+    private Player player1;
+    private Player player2;
+    private List<Card> deck;
+    private List<JButton> buttons;
 
-    public GFrame() {
-        setLayout(new GridLayout(5, 2));
-        add(new JLabel("첫번째 플레이어의 이름을 입력 : "));
-        nameField1 = new JTextField();
-        add(nameField1);
+    public GFrame(List<Card> deck) {
+        this.deck = deck;
 
-        add(new JLabel("첫번째 플레이어의 점수를 입력 : "));
-        scoreField1 = new JTextField();
-        add(scoreField1);
+        player1 = new Player("Player1");
+        player2 = new Player("Player2");
 
-        add(new JLabel("두번째 플레이어의 이름을 입력 : "));
-        nameField2 = new JTextField();
-        add(nameField2);
+        // GUI 설정
+        setLayout(new GridLayout(3, 3));
+        setSize(300, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        add(new JLabel("두번째 플레이어의 점수를 입력 : "));
-        scoreField2 = new JTextField();
-        add(scoreField2);
+        // 카드 버튼 생성
+        buttons = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            JButton button = new JButton(deck.get(i).getImage());
+            button.setBorder(new LineBorder(Color.WHITE)); // 초기 테두리 색상은 하얀색
+            int finalI = i;
+            button.addActionListener(new ActionListener() {
+                private boolean isClicked = false; // 버튼이 클릭되었는지 확인하는 변수
 
-        JButton button = new JButton("Determine Winner");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Point point = new Point();
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // 버튼을 클릭하면 카드를 뽑고 테두리 색상을 변경
+                    if (!isClicked) {
+                        player1.drawCard(deck.get(finalI));
+                        deck.remove(finalI);
+                        button.setBorder(new LineBorder(Color.BLUE)); // 첫 클릭시 파란색 테두리
+                        isClicked = true;
+                    } else {
+                        player2.drawCard(deck.get(finalI));
+                        deck.remove(finalI);
+                        button.setBorder(new LineBorder(Color.RED)); // 두번째 클릭시 빨간색 테두리
+                        button.setEnabled(false); // 두번 클릭하면 버튼 비활성화
+                    }
+                }
+            });
+            buttons.add(button);
+            add(button);
+        }
 
-                Player player1 = new Player(nameField1.getText());
-                player1.addPoints(Integer.parseInt(scoreField1.getText()));
-                point.addPlayer(player1);
-
-                Player player2 = new Player(nameField2.getText());
-                player2.addPoints(Integer.parseInt(scoreField2.getText()));
-                point.addPlayer(player2);
-
-                Winner winner = new Winner(point);
-                Player winningPlayer = winner.determineWinner();
-
-                winnerLabel.setText("Winner is " + winningPlayer.getId() + " with " + winningPlayer.getPoints() + " points.");
-            }
-        });
-        add(button);
-
-        winnerLabel = new JLabel();
-        add(winnerLabel);
-
-        pack();
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(1000,1000);
     }
 }
