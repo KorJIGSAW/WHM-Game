@@ -9,19 +9,19 @@ public class GFrame extends JFrame {
 
     public GFrame() {
         setLayout(new GridLayout(5, 2));
-        add(new JLabel("Player 1 Name:"));
+        add(new JLabel("첫번째 플레이어의 이름을 입력 : "));
         nameField1 = new JTextField();
         add(nameField1);
 
-        add(new JLabel("Player 1 Score:"));
+        add(new JLabel("첫번째 플레이어의 점수를 입력 : "));
         scoreField1 = new JTextField();
         add(scoreField1);
 
-        add(new JLabel("Player 2 Name:"));
+        add(new JLabel("두번째 플레이어의 이름을 입력 : "));
         nameField2 = new JTextField();
         add(nameField2);
 
-        add(new JLabel("Player 2 Score:"));
+        add(new JLabel("두번째 플레이어의 점수를 입력 : "));
         scoreField2 = new JTextField();
         add(scoreField2);
 
