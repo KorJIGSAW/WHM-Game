@@ -8,6 +8,11 @@ public class Main {
         File folder = new File("./images");
         File[] listOfFiles = folder.listFiles();
 
+        if (listOfFiles == null) {
+            System.out.println("Cannot find directory ./images");
+            return;
+        }
+
         List<Card> deck = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             if (listOfFiles[i].isFile()) {
@@ -18,3 +23,4 @@ public class Main {
         new GFrame(deck);
     }
 }
+
