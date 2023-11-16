@@ -1,12 +1,9 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 public class GFrame extends JFrame {
@@ -19,40 +16,37 @@ public class GFrame extends JFrame {
     public GFrame(List<Card> deck) {
         player1 = new Player("Player1");
         player2 = new Player("Player2");
-        currentPlayer = player1; // 처음에는 player1이 선택
+        currentPlayer = player1; 
         clickCount = 0;
         Font font1 =  new Font("Showcard Gothic", Font.BOLD, 30);
 
-        // GUI 설정
-        setLayout(new GridLayout(3, 3));
-        setSize(900, 900);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // 카드 버튼 생성
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 3));
         buttons = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
-            JButton button = new JButton("?"); // 버튼의 초기 텍스트를 "?"로 설정
-            button.setBorder(new LineBorder(Color.WHITE)); // 초기 테두리 색상은 하얀색
+            JButton button = new JButton("?"); 
+            button.setBorder(new LineBorder(Color.WHITE)); 
             int finalI = i;
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // 버튼을 클릭하면 카드를 뽑고 테두리 색상을 변경
                     String fileName = deck.get(finalI).getImage();
-                    String baseName = fileName.substring(0, fileName.lastIndexOf('.')); // 확장자 제거
+                    String baseName = fileName.substring(0, fileName.lastIndexOf('.')); 
                     button.setFont(font1);
-                    button.setText(baseName); // 버튼의 텍스트를 해당 카드의 파일 이름으로 변경(확장자 제외)
-                    currentPlayer.drawCard(deck.get(finalI)); // 현재 플레이어에 카드 정보 전달
+                    button.setText(baseName); 
+                    currentPlayer.drawCard(deck.get(finalI));
                     if (currentPlayer == player1) {
-                        button.setBorder(new LineBorder(Color.BLUE, 10)); // player1의 턴일 때는 파란색 테두리
-                        currentPlayer = player2; // player를 변경
+                        button.setBorder(new LineBorder(Color.BLUE, 10)); 
+                        currentPlayer = player2; 
                     } else {
-                        button.setBorder(new LineBorder(Color.RED, 10)); // player2의 턴일 때는 빨간색 테두리
-                        currentPlayer = player1; // player를 변경
+                        button.setBorder(new LineBorder(Color.RED, 10)); 
+                        currentPlayer = player1; 
                     }
-                    button.setEnabled(false); // 클릭한 버튼은 비활성화
+                    button.setEnabled(false);
                     clickCount++;
-                    if (clickCount == 2) { // 두 번 클릭되면 모든 버튼 비활성화
+                    if (clickCount == 2) {
                         for (JButton btn : buttons) {
                             btn.setEnabled(false);
                         }
@@ -60,8 +54,48 @@ public class GFrame extends JFrame {
                 }
             });
             buttons.add(button);
-            add(button);
+            buttonPanel.add(button);
         }
+
+        // 다음 버튼 추가
+        JPanel nextButtonPanel = new JPanel(new FlowLayout());
+        JButton nextButton = new JButton("다음");
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NextFrame(player1, player2);
+                dispose();
+            }
+        });
+        nextButtonPanel.add(nextButton);
+
+        setLayout(new BorderLayout());
+        add(buttonPanel, BorderLayout.CENTER);
+        add(nextButtonPanel, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 }
+
+class NextFrame extends JFrame {
+    public NextFrame(Player player1, Player player2) {
+        setSize(900, 900);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(1, 2));
+
+        // player1의 마지막 카드를 가져옴
+        Card lastCard1 = player1.getLastCard();
+        // player1의 마지막 카드 이미지를 레이블로 생성
+        JLabel label1 = new JLabel(new ImageIcon("./images/" + lastCard1.getImage()));
+        add(label1);
+
+        // player2의 마지막 카드를 가져옴
+        Card lastCard2 = player2.getLastCard();
+        // player2의 마지막 카드 이미지를 레이블로 생성
+        JLabel label2 = new JLabel(new ImageIcon("./images/" + lastCard2.getImage()));
+        add(label2);
+
+        setVisible(true);
+    }
+}
+
