@@ -48,19 +48,19 @@ public class Card {
         if (listOfFiles[3].isFile()) { //나무
             deck.add(new Card(listOfFiles[3].getName(), false, 2));
         }
-        if (listOfFiles[3].isFile()) { //런던
+        if (listOfFiles[4].isFile()) { //런던
             deck.add(new Card(listOfFiles[4].getName(), false, 24));
         }
-        if (listOfFiles[3].isFile()) { //산토리니
+        if (listOfFiles[5].isFile()) { //산토리니
             deck.add(new Card(listOfFiles[5].getName(), false, 10));
         }
-        if (listOfFiles[3].isFile()) { //일본
+        if (listOfFiles[6].isFile()) { //일본
             deck.add(new Card(listOfFiles[6].getName(), false, 300));
         }
-        if (listOfFiles[3].isFile()) { //타지마할
+        if (listOfFiles[7].isFile()) { //타지마할
             deck.add(new Card(listOfFiles[7].getName(), false, 40));
         }
-        if (listOfFiles[3].isFile()) { //훗카이도
+        if (listOfFiles[8].isFile()) { //훗카이도
             deck.add(new Card(listOfFiles[8].getName(), false, 0));
         }
 

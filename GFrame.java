@@ -3,11 +3,16 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Image; // 추가
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
+
+
+import javax.swing.ImageIcon;
 
 public class GFrame extends JFrame {
     private Player player1;
@@ -17,11 +22,12 @@ public class GFrame extends JFrame {
     private int clickCount;
 
     public GFrame(List<Card> deck) {
+
         player1 = new Player("Player1");
         player2 = new Player("Player2");
         currentPlayer = player1; // 처음에는 player1이 선택
         clickCount = 0;
-        Font font1 =  new Font("Showcard Gothic", Font.BOLD, 30);
+        Font font1 = new Font("Showcard Gothic", Font.BOLD, 30);
 
         // GUI 설정
         setLayout(new GridLayout(3, 3));
@@ -31,9 +37,10 @@ public class GFrame extends JFrame {
         // 카드 버튼 생성
         buttons = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
+            int finalI = i;
             JButton button = new JButton("?"); // 버튼의 초기 텍스트를 "?"로 설정
             button.setBorder(new LineBorder(Color.WHITE)); // 초기 테두리 색상은 하얀색
-            int finalI = i;
+
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -43,6 +50,11 @@ public class GFrame extends JFrame {
                     button.setFont(font1);
                     button.setText(baseName); // 버튼의 텍스트를 해당 카드의 파일 이름으로 변경(확장자 제외)
                     currentPlayer.drawCard(deck.get(finalI)); // 현재 플레이어에 카드 정보 전달
+                    File imageFile = new File("./images/" + fileName);
+                    ImageIcon icon = new ImageIcon(imageFile.getAbsolutePath()); // 이미지 아이콘 생성
+                    Image image = icon.getImage(); // ImageIcon에서 Image 추출
+        Image resizedImage = image.getScaledInstance(300, 300, java.awt.Image.SCALE_SMOOTH); // 이미지 크기 조정
+        button.setIcon(new ImageIcon(resizedImage));
                     if (currentPlayer == player1) {
                         button.setBorder(new LineBorder(Color.BLUE, 10)); // player1의 턴일 때는 파란색 테두리
                         currentPlayer = player2; // player를 변경
@@ -58,6 +70,7 @@ public class GFrame extends JFrame {
                         }
                     }
                 }
+
             });
             buttons.add(button);
             add(button);
