@@ -1,9 +1,21 @@
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Point;  // Point 클래스를 import
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+
+import javax.swing.JLayeredPane;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class GFrame extends JFrame {
@@ -77,25 +89,92 @@ public class GFrame extends JFrame {
     }
 }
 
+
 class NextFrame extends JFrame {
+    private Player player1;
+    private Player player2;
+    private int visibleWidth = 0;  
+    private int visibleHeight = 0;
+
     public NextFrame(Player player1, Player player2) {
-        setSize(900, 900);
+        this.player1 = player1;
+        this.player2 = player2;
+
+        setSize(800, 800);  
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(1, 2));
+        getContentPane().setLayout(null);
 
-        // player1의 마지막 카드를 가져옴
+        // 첫 번째 플레이어의 마지막 카드를 가져옴
         Card lastCard1 = player1.getLastCard();
-        // player1의 마지막 카드 이미지를 레이블로 생성
-        JLabel label1 = new JLabel(new ImageIcon("./images/" + lastCard1.getImage()));
-        add(label1);
+        // 첫 번째 플레이어의 마지막 카드 이미지를 레이블로 생성
+        ImageIcon imageIcon = new ImageIcon("./images/" + lastCard1.getImage());
+        int imageWidth = imageIcon.getIconWidth();
+        int imageHeight = imageIcon.getIconHeight();
 
-        // player2의 마지막 카드를 가져옴
-        Card lastCard2 = player2.getLastCard();
-        // player2의 마지막 카드 이미지를 레이블로 생성
-        JLabel label2 = new JLabel(new ImageIcon("./images/" + lastCard2.getImage()));
-        add(label2);
+        // Custom label that shows only a portion of the image
+        JLabel label = new JLabel(imageIcon) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                g.setClip(0, 0, visibleWidth, visibleHeight);
+                super.paintComponent(g);
+            }
+        };
+        label.setBounds(0, 0, imageWidth, imageHeight);
+        getContentPane().add(label);
+
+        // 4방향 버튼
+        JButton leftButton = new JButton("←");
+        leftButton.setBounds(500, 300, 50, 50);
+        leftButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (visibleWidth > 0) {
+                    visibleWidth -= 30;
+                    label.repaint();
+                }
+            }
+        });
+        getContentPane().add(leftButton);
+
+        JButton rightButton = new JButton("→");
+        rightButton.setBounds(600, 300, 50, 50);
+        rightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (visibleWidth < imageWidth) {
+                    visibleWidth += 30;
+                    label.repaint();
+                }
+            }
+        });
+        getContentPane().add(rightButton);
+
+        JButton upButton = new JButton("↑");
+        upButton.setBounds(550, 250, 50, 50);
+        upButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (visibleHeight > 0) {
+                    visibleHeight -= 30;
+                    label.repaint();
+                }
+            }
+        });
+        getContentPane().add(upButton);
+
+        JButton downButton = new JButton("↓");
+        downButton.setBounds(550, 300, 50, 50);
+        downButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (visibleHeight < imageHeight) {
+                    visibleHeight += 30;
+                    label.repaint();
+                }
+            }
+        });
+        getContentPane().add(downButton);
 
         setVisible(true);
     }
 }
-
