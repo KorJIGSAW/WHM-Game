@@ -1,15 +1,8 @@
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
-    // 프로그램의 실행을 담당하는 클래스
-	public static void main(String [] args) {
-        new GFrame();
-	}
+    public static void main(String[] args) {
+        Theme theme = new Theme(); // Theme 객체 생성
+        new ThemeFrame(theme); // ThemeFrame 객체 생성 후 Theme 객체 전달
+    }
 }
-
-
-
-
-
-
-

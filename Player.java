@@ -1,11 +1,20 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public class Player {
+    private String name;
+    private List<Card> cards;
+
+    public Player(String name) {
+        this.name = name;
+        this.cards = new ArrayList<>();
+    }
+
+    public void drawCard(Card card) {
+        cards.add(card);
+    }
     private String id;
     private int points;
-
-    public Player(String id) {
-        this.id = id;
-        this.points = 0;
-    }
 
     public String getId() {
         return id;
