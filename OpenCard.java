@@ -21,8 +21,22 @@ public class OpenCard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
+        /*
+         * 여기도 해결해야할 문제가 있다. 
+         * Player1과 player2간의 테마 차이점으로 인해 서로 다른 이미지 폴더에서 사진을 가져와야한다.
+         * 수정하면 이 주석은 삭제할것.
+         */
         Card lastCard1 = player1.getLastCard();
-        ImageIcon originalIcon = new ImageIcon("./images/" + lastCard1.getImage());
+        if(theme.getPlayer1Theme() == "사람"){
+            ImageIcon originalIcon = new ImageIcon("./image/사람/" + lastCard1.getImage());
+        }
+        else if(theme.getPlayer1Theme() == "동물"){
+            ImageIcon originalIcon = new ImageIcon("./image/동물/" + lastCard1.getImage());
+        }
+        else{
+            ImageIcon originalIcon = new ImageIcon("./image/풍경/" + lastCard1.getImage());
+        }
+       
         ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
 
         JLabel label = new JLabel(scaledIcon) {

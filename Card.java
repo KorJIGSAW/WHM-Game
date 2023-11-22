@@ -29,14 +29,22 @@ class Card {
     public static List<Card> insert_card() {
         File folder1 = new File("./image/풍경");
         File folder2 = new File("./image/동물");
+        File folder3 = new File("./image/사람");
         File[] listOfFiles1 = folder1.listFiles();
         File[] listOfFiles2 = folder2.listFiles();
+        File[] listOfFiles3 = folder3.listFiles();
 
-        if (listOfFiles1 == null || listOfFiles2 == null) {
-            System.out.println("Cannot find directory ./image/풍경 or ./image/동물");
+        if (listOfFiles1 == null || listOfFiles2 == null || listOfFiles3 == null) {
+            System.out.println("Cannot find directory ./image/풍경 or ./image/동물 or ./image/사람");
             return null;
         }
-
+        /*
+         * 고쳐야할 부분이 있다. 
+         * 풍경, 동물, 사람 폴더에 있는 이미지를 랜덤으로 뽑아서 카드를 만들어야 한다.
+         * 현재 코드를 보면 아래쪽에 Boolean형태로 갈라서 둘중 하나로 넣고 있는 image/사람 폴더에 사진 9개를 추가하고
+         * 3폴더에서 총 27장중 9장을 랜덤으로 선별하는 코드가 필요하다.
+         * 이 내용은 수정시 주석을 삭제한다.
+         */
         List<Card> deck = new ArrayList<>();
         Random rand = new Random();
         
