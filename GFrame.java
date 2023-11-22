@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-// GFrame.java
 public class GFrame extends JFrame {
     private Player player1;
     private Player player2;
@@ -15,14 +14,14 @@ public class GFrame extends JFrame {
     private Player currentPlayer;
     private int clickCount;
 
-    public GFrame(List<Card> deck) {
+    public GFrame(List<Card> deck, Theme theme) {
         player1 = new Player("Player1");
         player2 = new Player("Player2");
-        currentPlayer = player1; 
+        currentPlayer = player1;
         clickCount = 0;
         Font font1 = new Font("Showcard Gothic", Font.BOLD, 30);
 
-        setLayout(new GridLayout(3, 3));
+        setLayout(new GridLayout(4, 3)); // 레이아웃을 4x3 그리드로 변경
         setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -30,7 +29,7 @@ public class GFrame extends JFrame {
         for (int i = 0; i < deck.size(); i++) {
             int finalI = i;
             JButton button = new JButton("?");
-            button.setBorder(new LineBorder(Color.WHITE)); 
+            button.setBorder(new LineBorder(Color.WHITE));
 
             button.addActionListener(new ActionListener() {
                 @Override
@@ -40,28 +39,39 @@ public class GFrame extends JFrame {
                     Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
                     button.setIcon(new ImageIcon(image));
 
-                    currentPlayer.drawCard(deck.get(finalI)); 
+                    currentPlayer.drawCard(deck.get(finalI));
 
                     if (currentPlayer == player1) {
-                        button.setBorder(new LineBorder(Color.BLUE, 10)); 
-                        currentPlayer = player2; 
+                        button.setBorder(new LineBorder(Color.BLUE, 10));
+                        currentPlayer = player2;
                     } else {
-                        button.setBorder(new LineBorder(Color.RED, 10)); 
-                        currentPlayer = player1; 
+                        button.setBorder(new LineBorder(Color.RED, 10));
+                        currentPlayer = player1;
                     }
-                    button.setEnabled(false); 
+                    button.setEnabled(false);
                     clickCount++;
-                    if (clickCount == 2) { 
+                    if (clickCount == 2) {
                         for (JButton btn : buttons) {
                             btn.setEnabled(false);
                         }
-                        new OpenCard(player1, player2); // OpenCard 실행
                     }
                 }
             });
             buttons.add(button);
             add(button);
         }
+
+        // 다음 버튼 생성
+        JButton nextButton = new JButton("다음");
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new OpenCard(player1, player2, theme); // OpenCard 실행
+            }
+        });
+
+        add(nextButton); // 다음 버튼 추가
+
         setVisible(true);
     }
 }

@@ -10,6 +10,10 @@ public class Player {
         this.cards = new ArrayList<>();
     }
 
+    public Card getLastCard() {
+        return cards.get(cards.size() - 1);
+    }
+
     public void drawCard(Card card) {
         cards.add(card);
     }
@@ -28,3 +32,4 @@ public class Player {
         this.points += points;
     }
 }
+
