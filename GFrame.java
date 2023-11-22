@@ -186,4 +186,3 @@ class NextFrame extends JFrame {
         setVisible(true);
     }
 }
-
