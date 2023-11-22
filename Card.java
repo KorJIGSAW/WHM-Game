@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Card {
+class Card {
     private String image;
     private boolean isFaceUp;
     private int peopleCount;
@@ -22,11 +22,11 @@ public class Card {
         return isFaceUp;
     }
 
-    public int getPeopleCount(){
+    public int getPeopleCount() {
         return peopleCount;
     }
     
-    public static List<Card> insert_card(){
+    public static List<Card> insert_card() {
         File folder1 = new File("./image/풍경");
         File folder2 = new File("./image/동물");
         File[] listOfFiles1 = folder1.listFiles();
@@ -41,7 +41,6 @@ public class Card {
         Random rand = new Random();
         
         for (int i = 0; i < 9; i++) {
-            // '풍경'과 '동물' 폴더 중 어느 폴더에서 이미지를 선택할지 랜덤하게 결정
             File[] chosenFolder = rand.nextBoolean() ? listOfFiles1 : listOfFiles2;
             File file = chosenFolder[rand.nextInt(chosenFolder.length)];
             

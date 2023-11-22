@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+// GFrame.java
 public class GFrame extends JFrame {
     private Player player1;
     private Player player2;
@@ -14,10 +15,7 @@ public class GFrame extends JFrame {
     private Player currentPlayer;
     private int clickCount;
 
-    private Theme theme;  // 추가된 멤버 변수
-
-    public GFrame(List<Card> deck, Theme theme) {  // 수정된 생성자
-        this.theme = theme;
+    public GFrame(List<Card> deck) {
         player1 = new Player("Player1");
         player2 = new Player("Player2");
         currentPlayer = player1; 
@@ -57,6 +55,7 @@ public class GFrame extends JFrame {
                         for (JButton btn : buttons) {
                             btn.setEnabled(false);
                         }
+                        new OpenCard(player1, player2); // OpenCard 실행
                     }
                 }
             });
