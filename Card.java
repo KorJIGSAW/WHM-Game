@@ -27,13 +27,13 @@ public class Card {
     }
     
     public static List<Card> insert_card(){
-        File folder1 = new File("./images/풍경");
-        File folder2 = new File("./images/동물");
+        File folder1 = new File("./image/풍경");
+        File folder2 = new File("./image/동물");
         File[] listOfFiles1 = folder1.listFiles();
         File[] listOfFiles2 = folder2.listFiles();
 
         if (listOfFiles1 == null || listOfFiles2 == null) {
-            System.out.println("Cannot find directory ./images/풍경 or ./images/동물");
+            System.out.println("Cannot find directory ./image/풍경 or ./image/동물");
             return null;
         }
 
