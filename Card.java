@@ -1,10 +1,10 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Card {
-    private String image;
+    // 카드 9장 가져오기 Card의 객체 정보저장담당
+	private String image;
     private boolean isFaceUp;
     private int peopleCount;
 
@@ -27,29 +27,44 @@ public class Card {
     }
     
     public static List<Card> insert_card(){
-        File folder1 = new File("./images/풍경");
-        File folder2 = new File("./images/동물");
-        File[] listOfFiles1 = folder1.listFiles();
-        File[] listOfFiles2 = folder2.listFiles();
+        File folder = new File("./images");
+        File[] listOfFiles = folder.listFiles();
 
-        if (listOfFiles1 == null || listOfFiles2 == null) {
-            System.out.println("Cannot find directory ./images/풍경 or ./images/동물");
+        if (listOfFiles == null) {
+            System.out.println("Cannot find directory ./images");
             return null;
         }
 
         List<Card> deck = new ArrayList<>();
-        Random rand = new Random();
-        
-        for (int i = 0; i < 9; i++) {
-            // '풍경'과 '동물' 폴더 중 어느 폴더에서 이미지를 선택할지 랜덤하게 결정
-            File[] chosenFolder = rand.nextBoolean() ? listOfFiles1 : listOfFiles2;
-            File file = chosenFolder[rand.nextInt(chosenFolder.length)];
-            
-            if (file.isFile()) {
-                deck.add(new Card(file.getPath(), false, 103)); // peopleCount는 예시입니다. 실제로는 적절한 값을 사용해주세요.
-            }
+        if (listOfFiles[0].isFile()) { //가을
+            deck.add(new Card(listOfFiles[0].getName(), false, 103));
+        }
+        if (listOfFiles[1].isFile()) { //공항
+            deck.add(new Card(listOfFiles[1].getName(), false, 3));
+        }
+        if (listOfFiles[2].isFile()) { //기차
+            deck.add(new Card(listOfFiles[2].getName(), false, 18));
+        }
+        if (listOfFiles[3].isFile()) { //나무
+            deck.add(new Card(listOfFiles[3].getName(), false, 2));
+        }
+        if (listOfFiles[3].isFile()) { //런던
+            deck.add(new Card(listOfFiles[4].getName(), false, 24));
+        }
+        if (listOfFiles[3].isFile()) { //산토리니
+            deck.add(new Card(listOfFiles[5].getName(), false, 10));
+        }
+        if (listOfFiles[3].isFile()) { //일본
+            deck.add(new Card(listOfFiles[6].getName(), false, 300));
+        }
+        if (listOfFiles[3].isFile()) { //타지마할
+            deck.add(new Card(listOfFiles[7].getName(), false, 40));
+        }
+        if (listOfFiles[3].isFile()) { //훗카이도
+            deck.add(new Card(listOfFiles[8].getName(), false, 0));
         }
 
         return deck;
     }
+
 }
