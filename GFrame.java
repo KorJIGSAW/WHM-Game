@@ -67,6 +67,7 @@ public class GFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new OpenCard(player1, player2, theme); // OpenCard 실행
+                dispose();
             }
         });
 
