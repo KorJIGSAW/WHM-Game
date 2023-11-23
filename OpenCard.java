@@ -27,14 +27,15 @@ public class OpenCard extends JFrame {
          * 수정하면 이 주석은 삭제할것.
          */
         Card lastCard1 = player1.getLastCard();
+        ImageIcon originalIcon = null; // originalIcon을 null로 초기화
         if(theme.getPlayer1Theme() == "사람"){
-            ImageIcon originalIcon = new ImageIcon("./image/사람/" + lastCard1.getImage());
+            originalIcon = new ImageIcon("./image/사람/" + lastCard1.getImage());
         }
         else if(theme.getPlayer1Theme() == "동물"){
-            ImageIcon originalIcon = new ImageIcon("./image/동물/" + lastCard1.getImage());
+            originalIcon = new ImageIcon("./image/동물/" + lastCard1.getImage());
         }
         else{
-            ImageIcon originalIcon = new ImageIcon("./image/풍경/" + lastCard1.getImage());
+            originalIcon = new ImageIcon("./image/풍경/" + lastCard1.getImage());
         }
        
         ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
