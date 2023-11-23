@@ -28,7 +28,7 @@ public class OpenCard extends JFrame {
         try {
             System.out.println(theme.getPlayer1Theme());
             System.out.println(lastCard1.getImageName());
-            ArrayList<String> themes = new ArrayList<>(Arrays.asList("./image/사람/", "./image/동물/", "./image/풍경/"));
+            ArrayList<String> themes = new ArrayList<>(Arrays.asList("./image/사람/", "./image/동물/", "./image/나무/"));
             for (String th : themes) {
                 String imagePath = th + lastCard1.getImageName();
                 if (Files.exists(Paths.get(imagePath))) {
