@@ -7,6 +7,8 @@ class Card {
     private String image;
     private boolean isFaceUp;
     private int peopleCount;
+    private int treeCount;
+    private int animalCount;
 
     public Card(String image, boolean isFaceUp, int peopleCount) {
         this.image = image;
@@ -24,6 +26,14 @@ class Card {
 
     public int getPeopleCount() {
         return peopleCount;
+    }
+    
+    public int getTreeCount(){
+        return treeCount;
+    }
+
+    public int getAnimalCount(){
+        return animalCount;
     }
 
     public String getImageName() {
