@@ -14,6 +14,12 @@ public class OpenCard extends JFrame {
     private int visibleWidth = 30;
     private int visibleHeight = 30;
 
+    // 이미지 최대 크기 정의
+    private static final int IMAGE_MAX_WIDTH = 500;
+    private static final int IMAGE_MAX_HEIGHT = 500;
+  
+    JLabel imageLabel = null;
+  
     public OpenCard(Player player, Player nextPlayer, Theme theme) {
         this.player = player;
         this.nextPlayer = nextPlayer;
@@ -31,11 +37,7 @@ public class OpenCard extends JFrame {
         themeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         themeLabel.setBounds(150, 60, 400, 50);
         themeLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
-        /*
-         * 현재 코드에 테마출력이  안됨.
-         * 문제를 수정할 시 이 주석은 삭제할것.
-         */
-
+    
         Card FirstPlayerCardInfo = player.getLastCard();  
         Card SecondPlayerCardInfo = nextPlayer != null ? nextPlayer.getLastCard() : null; 
 
@@ -71,88 +73,48 @@ public class OpenCard extends JFrame {
             }
 
             if (originalIcon != null) {
-                ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
-
-                JLabel label = new JLabel(scaledIcon) {
+                ImageIcon scaledIcon = new ImageIcon(
+                    originalIcon.getImage().getScaledInstance(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT, Image.SCALE_DEFAULT)
+            );
+                imageLabel = new JLabel(scaledIcon) {
                     @Override
                     protected void paintComponent(Graphics g) {
                         g.setClip(0, 0, visibleWidth, visibleHeight);
                         super.paintComponent(g);
                     }
                 };
-                label.setBounds(150, 120, 500, 500);
-                getContentPane().add(label);
+                imageLabel.setBounds(150, 120, 500, 500);
+                getContentPane().add(imageLabel);
+
+                imageLabel.setBounds(0, 0, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+                getContentPane().add(imageLabel);
 
                 JButton leftButton = new JButton("←");
-                leftButton.setBounds(600, 450, 50, 50);
-                leftButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (visibleWidth > 0) {
-                            visibleWidth -= 30;
-                            label.repaint();
-                            if (visibleWidth == 500 && visibleHeight == 500) {
-                                themeCountLabel.setVisible(true);
-                            }
-                        }
-                    }
-                });
+                leftButton.setBounds(660, 550, 50, 50);
+                leftButton.addActionListener(e -> makeVisible(-30, true));
                 getContentPane().add(leftButton);
 
                 JButton rightButton = new JButton("→");
-                rightButton.setBounds(700, 450, 50, 50);
-                rightButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (visibleWidth < 500) {
-                            visibleWidth += 30;
-                            label.repaint();
-                            if (visibleWidth == 500 && visibleHeight == 500) {
-                                themeCountLabel.setVisible(true);
-                            }
-                        }
-                    }
-                });
+                rightButton.setBounds(760, 550, 50, 50);
+                rightButton.addActionListener(e -> makeVisible(30, true));
                 getContentPane().add(rightButton);
 
                 JButton upButton = new JButton("↑");
-                upButton.setBounds(650, 400, 50, 50);
-                upButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (visibleHeight > 0) {
-                            visibleHeight -= 30;
-                            label.repaint();
-                            if (visibleWidth == 500 && visibleHeight == 500) {
-                                themeCountLabel.setVisible(true);
-                            }
-                        }
-                    }
-                });
+                upButton.setBounds(710, 500, 50, 50);
+                upButton.addActionListener(e -> makeVisible(-30, false));
                 getContentPane().add(upButton);
 
                 JButton downButton = new JButton("↓");
-                downButton.setBounds(650, 500, 50, 50);
-                downButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (visibleHeight < 500) {
-                            visibleHeight += 30;
-                            label.repaint();
-                            if (visibleWidth == 500 && visibleHeight == 500) {
-                                themeCountLabel.setVisible(true);
-                            }
-                        }
-                    }
-                });
+                downButton.setBounds(710, 550, 50, 50);
+                downButton.addActionListener(e -> makeVisible(30, false));
                 getContentPane().add(downButton);
 
                 JButton revealButton = new JButton("한번에 공개");
                 revealButton.setBounds(660,400,150,50);
                 revealButton.addActionListener(e -> {
-                    visibleWidth = 500;
-                    visibleHeight = 500;
-                    label.repaint();
+                    visibleWidth = IMAGE_MAX_WIDTH;
+                    visibleHeight = IMAGE_MAX_HEIGHT;
+                    imageLabel.repaint();
                     themeCountLabel.setVisible(true);
                     if (nextPlayer != null) {
                         if(theme.getPlayer1Theme().equals("사람")){
@@ -179,7 +141,7 @@ public class OpenCard extends JFrame {
                 getContentPane().add(revealButton);
 
                 JButton nextButton = new JButton("다음 플레이어 카드 공개");
-                nextButton.setBounds(660,450,200,50);
+                nextButton.setBounds(660,660,200,50);
                 nextButton.addActionListener(e -> {
                     if (visibleWidth == 500 && visibleHeight == 500) {
                         this.dispose();
@@ -197,6 +159,18 @@ public class OpenCard extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    // refresh the visible range of picture
+    private void makeVisible(int range, boolean isWidth) {
+        if (isWidth) {
+            visibleWidth += range;
+            visibleWidth = visibleWidth < 0 ? 0 : Math.min(visibleWidth, IMAGE_MAX_WIDTH);
+        }
+        else {
+            visibleHeight += range;
+            visibleHeight = visibleHeight < 0 ? 0 : Math.min(visibleHeight, IMAGE_MAX_HEIGHT);
+        }
+        imageLabel.repaint();
     }
 }
 
