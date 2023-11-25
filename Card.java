@@ -10,10 +10,12 @@ class Card {
     private int treeCount;
     private int animalCount;
 
-    public Card(String image, boolean isFaceUp, int peopleCount) {
+    public Card(String image, boolean isFaceUp, int peopleCount, int treeCount, int animalCount) {
         this.image = image;
         this.isFaceUp = isFaceUp;
         this.peopleCount = peopleCount;
+        this.animalCount = animalCount;
+        this.treeCount = treeCount;
     }
 
     public String getImage() {
@@ -65,9 +67,15 @@ class Card {
             // 선택된 폴더에서 이미지 선택
             File[] chosenFolder = listOfFiles[selectedFolderIndex];
             File file = chosenFolder[selectedIndexes[selectedFolderIndex]];
-
+        
             if (file.isFile()) {
-                deck.add(new Card(file.getPath(), false, 103)); // peopleCount는 예시입니다. 실제로는 적절한 값을 사용해주세요.
+                String fileNameWithoutExtension = file.getName().substring(0, file.getName().lastIndexOf("."));
+                String[] counts = fileNameWithoutExtension.split("_");  // 파일 이름을 '_'로 분리
+                int peopleCount = Integer.parseInt(counts[1]);
+                int animalCount = Integer.parseInt(counts[2]);
+                int treeCount = Integer.parseInt(counts[3]);
+                System.out.println("peopleCount: " + peopleCount + ", treeCount: " +  treeCount + ", animalCount: " + animalCount);
+                deck.add(new Card(file.getPath(), false, peopleCount, treeCount, animalCount));
             }
             
             // 해당 폴더에서 다음에 뽑을 이미지의 인덱스 증가
@@ -76,11 +84,3 @@ class Card {
         return deck;
     }
 }
-
-/*
- * 고쳐야할 부분이 있다. 
- * 풍경, 동물, 사람 폴더에 있는 이미지를 랜덤으로 뽑아서 카드를 만들어야 한다.
- * 현재 코드를 보면 아래쪽에 Boolean형태로 갈라서 둘중 하나로 넣고 있는 image/사람 폴더에 사진 9개를 추가하고
- * 3폴더에서 총 27장중 9장을 랜덤으로 선별하는 코드가 필요하다.
- * 이 내용은 수정시 주석을 삭제한다.
- */

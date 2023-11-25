@@ -83,10 +83,7 @@ public class OpenCard extends JFrame {
                         super.paintComponent(g);
                     }
                 };
-                imageLabel.setBounds(150, 120, 500, 500);
-                getContentPane().add(imageLabel);
-
-                imageLabel.setBounds(0, 0, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+                imageLabel.setBounds(130, 130, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
                 getContentPane().add(imageLabel);
 
                 JButton leftButton = new JButton("←");
@@ -115,29 +112,39 @@ public class OpenCard extends JFrame {
                     visibleWidth = IMAGE_MAX_WIDTH;
                     visibleHeight = IMAGE_MAX_HEIGHT;
                     imageLabel.repaint();
-                    themeCountLabel.setVisible(true);
                     if (nextPlayer != null) {
                         if(theme.getPlayer1Theme().equals("사람")){
+                            System.out.println(FirstPlayerCardInfo.getPeopleCount());
                             themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getPeopleCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("동물")){
+                            System.out.println(FirstPlayerCardInfo.getAnimalCount());
                             themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getAnimalCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("나무")){
+                            System.out.println(FirstPlayerCardInfo.getTreeCount());
                             themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getTreeCount() + "개");
                         }
-                    } else {
-                        if(theme.getPlayer2Theme().equals("사람")){
-                            themeCountLabel.setText("두번째 플레이어 : " + SecondPlayerCardInfo.getPeopleCount() + "개");
-                        }
-                        else if(theme.getPlayer2Theme().equals("동물")){
-                            themeCountLabel.setText("두번째 플레이어 : " + SecondPlayerCardInfo.getAnimalCount() + "개");
-                        }
-                        else if(theme.getPlayer2Theme().equals("나무")){
-                            themeCountLabel.setText("두번째 플레이어 : " + SecondPlayerCardInfo.getTreeCount() + "개");
+                    } 
+                    else {
+                        if(SecondPlayerCardInfo != null){
+                            if(theme.getPlayer2Theme().equals("사람")){
+                                System.out.print(SecondPlayerCardInfo.getPeopleCount());
+                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getPeopleCount() + "개");
+                            }
+                            else if(theme.getPlayer2Theme().equals("동물")){
+                                System.out.print(SecondPlayerCardInfo.getAnimalCount());
+                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getAnimalCount() + "개");
+                            }
+                            else if(theme.getPlayer2Theme().equals("나무")){
+                                System.out.print(SecondPlayerCardInfo.getTreeCount());
+                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getTreeCount() + "개");
+                            }
                         }
                     }
+                    themeCountLabel.setVisible(true); // 이 줄을 텍스트 설정 이후로 옮겼습니다.
                 });
+
                 getContentPane().add(revealButton);
 
                 JButton nextButton = new JButton("다음 플레이어 카드 공개");
@@ -174,6 +181,3 @@ public class OpenCard extends JFrame {
     }
 }
 
-/*
- * 방향키버튼 위치도 조정되어야한다.
- */
