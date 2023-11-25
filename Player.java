@@ -10,6 +10,14 @@ public class Player {
         this.cards = new ArrayList<>();
     }
 
+    public Card getLastCard() {
+        if (!cards.isEmpty()) {
+            return cards.get(cards.size() - 1);
+        } else {
+            return null; // cards가 비어있을 때 null을 반환하도록 합니다.
+        }
+    }
+
     public void drawCard(Card card) {
         cards.add(card);
     }
