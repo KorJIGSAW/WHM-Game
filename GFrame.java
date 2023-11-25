@@ -16,23 +16,23 @@ public class GFrame extends JFrame {
 
     public GFrame(Theme theme) {
         List<Card> deck = Card.insert_card();
-
+    
         player1 = new Player("Player1");
         player2 = new Player("Player2");
         currentPlayer = player1;
         clickCount = 0;
         Font font1 = new Font("Showcard Gothic", Font.BOLD, 30);
-
+    
         setLayout(new GridLayout(3, 3));
         setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    
         buttons = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
             int finalI = i;
             JButton button = new JButton("?");
             button.setBorder(new LineBorder(Color.WHITE));
-
+    
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -40,9 +40,9 @@ public class GFrame extends JFrame {
                     ImageIcon icon = new ImageIcon(fileName);
                     Image image = icon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
                     button.setIcon(new ImageIcon(image));
-
+    
                     currentPlayer.drawCard(deck.get(finalI));
-
+    
                     if (currentPlayer == player1) {
                         button.setBorder(new LineBorder(Color.BLUE, 10));
                         currentPlayer = player2;
@@ -52,7 +52,7 @@ public class GFrame extends JFrame {
                     }
                     button.setEnabled(false);
                     clickCount++;
-                    if (clickCount == 2) {
+                    if (clickCount == 9) {
                         for (JButton btn : buttons) {
                             btn.setEnabled(false);
                         }
