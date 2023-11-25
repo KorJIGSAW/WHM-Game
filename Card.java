@@ -74,7 +74,7 @@ class Card {
                 int peopleCount = Integer.parseInt(counts[1]);
                 int animalCount = Integer.parseInt(counts[2]);
                 int treeCount = Integer.parseInt(counts[3]);
-                System.out.println("peopleCount: " + peopleCount + ", treeCount: " +  treeCount + ", animalCount: " + animalCount);
+                System.out.println("peopleCount: " + "animalCount: " + animalCount + ", treeCount: " +  treeCount);
                 deck.add(new Card(file.getPath(), false, peopleCount, treeCount, animalCount));
             }
             

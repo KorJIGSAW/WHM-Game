@@ -38,8 +38,8 @@ public class OpenCard extends JFrame {
         themeLabel.setBounds(150, 60, 400, 50);
         themeLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
     
-        Card FirstPlayerCardInfo = player.getLastCard();  
-        Card SecondPlayerCardInfo = nextPlayer != null ? nextPlayer.getLastCard() : null; 
+        // 변경점
+        Card PlayerCardInfo = player.getLastCard();
 
         JLabel themeCountLabel = new JLabel();
         themeCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -75,7 +75,8 @@ public class OpenCard extends JFrame {
             if (originalIcon != null) {
                 ImageIcon scaledIcon = new ImageIcon(
                     originalIcon.getImage().getScaledInstance(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT, Image.SCALE_DEFAULT)
-            );
+                );
+
                 imageLabel = new JLabel(scaledIcon) {
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -112,36 +113,39 @@ public class OpenCard extends JFrame {
                     visibleWidth = IMAGE_MAX_WIDTH;
                     visibleHeight = IMAGE_MAX_HEIGHT;
                     imageLabel.repaint();
+
+                    // Opening first player
                     if (nextPlayer != null) {
                         if(theme.getPlayer1Theme().equals("사람")){
-                            System.out.println(FirstPlayerCardInfo.getPeopleCount());
-                            themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getPeopleCount() + "개");
+                            System.out.println(PlayerCardInfo.getPeopleCount());
+                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("동물")){
-                            System.out.println(FirstPlayerCardInfo.getAnimalCount());
-                            themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getAnimalCount() + "개");
+                            System.out.println(PlayerCardInfo.getAnimalCount());
+                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("나무")){
-                            System.out.println(FirstPlayerCardInfo.getTreeCount());
-                            themeCountLabel.setText("첫번째 플레이어 : " + FirstPlayerCardInfo.getTreeCount() + "개");
-                        }
-                    } 
-                    else {
-                        if(SecondPlayerCardInfo != null){
-                            if(theme.getPlayer2Theme().equals("사람")){
-                                System.out.print(SecondPlayerCardInfo.getPeopleCount());
-                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getPeopleCount() + "개");
-                            }
-                            else if(theme.getPlayer2Theme().equals("동물")){
-                                System.out.print(SecondPlayerCardInfo.getAnimalCount());
-                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getAnimalCount() + "개");
-                            }
-                            else if(theme.getPlayer2Theme().equals("나무")){
-                                System.out.print(SecondPlayerCardInfo.getTreeCount());
-                                themeCountLabel.setText("두번째 플레이어 : " + FirstPlayerCardInfo.getTreeCount() + "개");
-                            }
+                            System.out.println(PlayerCardInfo.getTreeCount());
+                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
                         }
                     }
+                    // Opening second player
+                    else {
+                        if(theme.getPlayer2Theme().equals("사람")){
+                            System.out.print(PlayerCardInfo.getPeopleCount());
+                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
+                        }
+                        else if(theme.getPlayer2Theme().equals("동물")){
+                            System.out.print(PlayerCardInfo.getAnimalCount());
+                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
+                        }
+                        else if(theme.getPlayer2Theme().equals("나무")){
+                            System.out.print(PlayerCardInfo.getTreeCount());
+                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
+                        }
+
+                    }
+
                     themeCountLabel.setVisible(true); // 이 줄을 텍스트 설정 이후로 옮겼습니다.
                 });
 
@@ -180,4 +184,3 @@ public class OpenCard extends JFrame {
         imageLabel.repaint();
     }
 }
-
