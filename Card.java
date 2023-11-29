@@ -37,6 +37,21 @@ class Card {
     public int getAnimalCount(){
         return animalCount;
     }
+    
+    public int getCount(String theme){
+        if(theme.equals("사람")){
+            return peopleCount;
+        }
+        else if(theme.equals("동물")){
+            return animalCount;
+        }
+        else if(theme.equals("나무")){
+            return treeCount;
+        }
+        else{
+            return 0;
+        }
+    }
 
     public String getImageName() {
         File file = new File(image);

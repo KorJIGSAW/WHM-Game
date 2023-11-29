@@ -10,6 +10,7 @@ import java.nio.file.*;
 public class OpenCard extends JFrame {
     private Player player;
     private Player nextPlayer;
+    private Player tempPlayer;
     private Theme theme;
     private int visibleWidth = 30;
     private int visibleHeight = 30;
@@ -23,6 +24,8 @@ public class OpenCard extends JFrame {
     public OpenCard(Player player, Player nextPlayer, Theme theme) {
         this.player = player;
         this.nextPlayer = nextPlayer;
+        //test 플레이어1꺼 테스트
+        this.tempPlayer = player;
         this.theme = theme;
 
         setSize(900,900);
@@ -146,7 +149,7 @@ public class OpenCard extends JFrame {
 
                     }
 
-                    themeCountLabel.setVisible(true); // 이 줄을 텍스트 설정 이후로 옮겼습니다.
+                    themeCountLabel.setVisible(true);
                 });
 
                 getContentPane().add(revealButton);
@@ -156,9 +159,15 @@ public class OpenCard extends JFrame {
                 nextButton.addActionListener(e -> {
                     if (visibleWidth == 500 && visibleHeight == 500) {
                         this.dispose();
+                        
                         if (nextPlayer != null) {
+                            tempPlayer = nextPlayer;
                             new OpenCard(nextPlayer, null, theme);
                         }
+                        else{
+                            //다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
+                            new WinnerFrame(player,tempPlayer, theme);
+                        }                        
                     }
                 });
                 getContentPane().add(nextButton);
