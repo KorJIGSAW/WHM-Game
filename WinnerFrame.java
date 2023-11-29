@@ -2,28 +2,31 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WinnerFrame extends JFrame {
-    public WinnerFrame(Player player1, Player player2, Theme theme) {
+    public WinnerFrame(int player1, int player2, Theme theme) {
+        System.out.println(player1 );
+        System.out.println(player2 );
         setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
         JLabel winnerLabel = new JLabel();
         winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        winnerLabel.setBounds(50, 50, 300, 50);
+        winnerLabel.setBounds(50, 50, 800, 50);
         winnerLabel.setFont(new Font("Serif", Font.BOLD, 20));
         
-        if(player1.getLastCard().getCount(theme.getPlayer1Theme()) > player2.getLastCard().getCount(theme.getPlayer2Theme())) {
+        if(player1 > player2) {
             winnerLabel.setText("첫번째 플레이어가 승리하였습니다!");
-        } else if(player1.getLastCard().getCount(theme.getPlayer1Theme()) < player2.getLastCard().getCount(theme.getPlayer2Theme())) {
+        } else if(player1 < player2) {
             winnerLabel.setText("두번째 플레이어가 승리하였습니다!");
         } else {
             winnerLabel.setText("무승부입니다!");
         }
-        /* 고쳐야할 사항 추가 현재 첫번째 플레이이가 승리하였... 이런식으로 나옴
-         * 수정할 시 이 주석은 삭제할 것.
-         */
-
+        
         getContentPane().add(winnerLabel);
         setVisible(true);
+        /*
+         * 다시하기 버튼 추가 및 기능 구현 필요
+         * 첫번째 Frame제작및 연결해야함
+         */
     }
 }

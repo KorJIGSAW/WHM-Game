@@ -14,6 +14,7 @@ public class OpenCard extends JFrame {
     private Theme theme;
     private int visibleWidth = 30;
     private int visibleHeight = 30;
+    private int WinnerPlayer2;
 
     // 이미지 최대 크기 정의
     private static final int IMAGE_MAX_WIDTH = 500;
@@ -21,12 +22,12 @@ public class OpenCard extends JFrame {
   
     JLabel imageLabel = null;
   
-    public OpenCard(Player player, Player nextPlayer, Theme theme) {
+    public OpenCard(Player player, Player nextPlayer, Theme theme){
         this.player = player;
         this.nextPlayer = nextPlayer;
-        //test 플레이어1꺼 테스트
         this.tempPlayer = player;
         this.theme = theme;
+        this.WinnerPlayer2 = 0;
 
         setSize(900,900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +39,7 @@ public class OpenCard extends JFrame {
         titleLabel.setBounds(150, 20, 400, 50);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
         themeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        themeLabel.setBounds(150, 60, 400, 50);
+        themeLabel.setBounds(100, 60, 600, 50);
         themeLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
     
         // 변경점
@@ -121,14 +122,17 @@ public class OpenCard extends JFrame {
                     if (nextPlayer != null) {
                         if(theme.getPlayer1Theme().equals("사람")){
                             System.out.println(PlayerCardInfo.getPeopleCount());
+                            Global.WinnerPlayer1 = PlayerCardInfo.getPeopleCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("동물")){
                             System.out.println(PlayerCardInfo.getAnimalCount());
+                            Global.WinnerPlayer1 = PlayerCardInfo.getAnimalCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
                         }
                         else if(theme.getPlayer1Theme().equals("나무")){
                             System.out.println(PlayerCardInfo.getTreeCount());
+                            Global.WinnerPlayer1 = PlayerCardInfo.getTreeCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
                         }
                     }
@@ -136,19 +140,20 @@ public class OpenCard extends JFrame {
                     else {
                         if(theme.getPlayer2Theme().equals("사람")){
                             System.out.print(PlayerCardInfo.getPeopleCount());
+                            WinnerPlayer2 = PlayerCardInfo.getPeopleCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
                         }
                         else if(theme.getPlayer2Theme().equals("동물")){
                             System.out.print(PlayerCardInfo.getAnimalCount());
+                            WinnerPlayer2 = PlayerCardInfo.getAnimalCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
                         }
                         else if(theme.getPlayer2Theme().equals("나무")){
                             System.out.print(PlayerCardInfo.getTreeCount());
+                            WinnerPlayer2 = PlayerCardInfo.getTreeCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
                         }
-
                     }
-
                     themeCountLabel.setVisible(true);
                 });
 
@@ -166,7 +171,7 @@ public class OpenCard extends JFrame {
                         }
                         else{
                             //다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
-                            new WinnerFrame(player,tempPlayer, theme);
+                            new WinnerFrame(Global.WinnerPlayer1, WinnerPlayer2, theme);
                         }                        
                     }
                 });
