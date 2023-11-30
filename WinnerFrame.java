@@ -23,6 +23,21 @@ public class WinnerFrame extends JFrame {
         }
         
         getContentPane().add(winnerLabel);
+
+        // Add firework images
+        ImageIcon fireworkIcon = new ImageIcon("./image/firework.png");  // Adjust path if needed
+        ImageIcon fireworkIcon2 = new ImageIcon("./image/firework2.png");  // Adjust path if needed
+        Image fireworkImage = fireworkIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // Adjust size if needed
+        Image fireworkImage2 = fireworkIcon2.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // Adjust size if needed
+
+        JLabel leftFireworkLabel = new JLabel(new ImageIcon(fireworkImage2));
+        leftFireworkLabel.setBounds(0, 50, 300, 300);  // Adjust position and size if needed
+        getContentPane().add(leftFireworkLabel);
+
+        JLabel rightFireworkLabel = new JLabel(new ImageIcon(fireworkImage));
+        rightFireworkLabel.setBounds(600, 50, 300, 300);  // Adjust position and size if needed
+        getContentPane().add(rightFireworkLabel);
+
         setVisible(true);
         /*
          * 다시하기 버튼 추가 및 기능 구현 필요
