@@ -14,17 +14,44 @@ public class GFrame extends JFrame {
     private Player currentPlayer;
     private int clickCount;
 
+    private JProgressBar progressBar;
+    private Thread timerThread;
+    private int timeLimit = 10;  // Set your time limit
+
     public GFrame(List<Card> deck, Theme theme) {
         player1 = new Player("Player1");
         player2 = new Player("Player2");
         currentPlayer = player1;
         clickCount = 0;
-        Font font1 = new Font("Showcard Gothic", Font.BOLD, 30);
 
-        setLayout(new GridLayout(4, 3)); // 레이아웃을 4x3 그리드로 변경
-        setSize(900, 900);
+        setLayout(new BorderLayout()); // Change layout to BorderLayout
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        UIManager.put("ProgressBar.foreground", Color.GREEN);  // Progress bar color
+        UIManager.put("ProgressBar.selectionBackground", Color.BLACK);  // Text color when not filled
+        UIManager.put("ProgressBar.selectionForeground", Color.BLACK);  // Text color when filled
+
+        progressBar = new JProgressBar();
+        progressBar.setMaximum(timeLimit);
+        progressBar.setStringPainted(true);
+        progressBar.setString(timeLimit + " 초");
+
+        timerThread = new TimerThread(timeLimit, progressBar, this);
+        timerThread.start();
+
+        // Progress bar at the top
+        progressBar.setPreferredSize(new Dimension(300, 20));  // Increase length
+        progressBar.setForeground(Color.GREEN);  // Change color to green
+        progressBar.setString(timeLimit + " 초");
+        
+        
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        topPanel.add(progressBar);
+        add(topPanel, BorderLayout.NORTH);
+
+        // Card buttons in the center
+        JPanel centerPanel = new JPanel(new GridLayout(3, 3));
         buttons = new ArrayList<>();
         for (int i = 0; i < deck.size(); i++) {
             int finalI = i;
@@ -57,22 +84,29 @@ public class GFrame extends JFrame {
                     }
                 }
             });
-            buttons.add(button);
-            add(button);
-        }
 
-        // 다음 버튼 생성
+            buttons.add(button);
+            centerPanel.add(button);
+        }
+        add(centerPanel, BorderLayout.CENTER);
+
+        // Next button at the bottom
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton nextButton = new JButton("다음");
+
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new OpenCard(player1, player2, theme); // OpenCard 실행
+                new OpenCardFrame(player1, player2, theme); // OpenCard 실행
+                timerThread.interrupt(); // Stop the timer thread when moving to the next frame
                 dispose();
             }
         });
 
-        add(nextButton); // 다음 버튼 추가
+        bottomPanel.add(nextButton);
+        add(bottomPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 }
+

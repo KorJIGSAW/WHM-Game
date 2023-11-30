@@ -14,12 +14,6 @@ public class ThemeFrame extends JFrame {
         setLayout(new GridLayout(1, 3)); // 수정된 부분
 
         String[] themes = {"사람", "동물", "나무"};
-        /*
-         * 현재 우리가 가른 테마에는 사람, 동물, 풍경이 있다.
-         * 위 themes배열에는 의자가 들어가 있다. 
-         * 적절한 풍경 사진과 내용이 풍경으로 바뀌어야한다.
-         * 수정시 이 주석은 삭제할것.
-         */
         for (String themeName : themes) {
             JPanel panel = new JPanel();
             panel.setLayout(new BorderLayout());

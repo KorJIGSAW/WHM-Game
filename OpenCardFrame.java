@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.nio.file.*;
 
-public class OpenCard extends JFrame {
+public class OpenCardFrame extends JFrame {
     private Player player;
     private Player nextPlayer;
     private Player tempPlayer;
@@ -22,7 +22,7 @@ public class OpenCard extends JFrame {
   
     JLabel imageLabel = null;
   
-    public OpenCard(Player player, Player nextPlayer, Theme theme){
+    public OpenCardFrame(Player player, Player nextPlayer, Theme theme){
         this.player = player;
         this.nextPlayer = nextPlayer;
         this.tempPlayer = player;
@@ -36,7 +36,7 @@ public class OpenCard extends JFrame {
         JLabel titleLabel = new JLabel();
         JLabel themeLabel = new JLabel();
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setBounds(150, 20, 400, 50);
+        titleLabel.setBounds(150, 20, 450, 50);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
         themeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         themeLabel.setBounds(100, 60, 600, 50);
@@ -167,7 +167,7 @@ public class OpenCard extends JFrame {
                         
                         if (nextPlayer != null) {
                             tempPlayer = nextPlayer;
-                            new OpenCard(nextPlayer, null, theme);
+                            new OpenCardFrame(nextPlayer, null, theme);
                         }
                         else{
                             //다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
