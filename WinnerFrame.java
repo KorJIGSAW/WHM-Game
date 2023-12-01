@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 public class WinnerFrame extends JFrame {
     public WinnerFrame(int player1, int player2, Theme theme) {
@@ -38,10 +41,21 @@ public class WinnerFrame extends JFrame {
         rightFireworkLabel.setBounds(600, 50, 300, 300);  // Adjust position and size if needed
         getContentPane().add(rightFireworkLabel);
 
+        ImageIcon playAgainIcon = new ImageIcon("./image/play_again.jpg");  // Adjust path if needed
+        Image playAgainImage = playAgainIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Adjust size if needed
+
+        JButton playAgainButton = new JButton(new ImageIcon(playAgainImage));
+        playAgainButton.setBounds(400, 600, 100, 100);  // Adjust position and size if needed
+        playAgainButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Theme theme = new Theme();
+                new ThemeFrame(theme); 
+            }
+        });
+        getContentPane().add(playAgainButton);
+
         setVisible(true);
-        /*
-         * 다시하기 버튼 추가 및 기능 구현 필요
-         * 첫번째 Frame제작및 연결해야함
-         */
     }
 }
