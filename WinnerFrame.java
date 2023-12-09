@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class WinnerFrame extends JFrame {
     public WinnerFrame(int player1, int player2, Theme theme) {
         System.out.println(player1 );
@@ -45,7 +44,7 @@ public class WinnerFrame extends JFrame {
         Image playAgainImage = playAgainIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Adjust size if needed
 
         JButton playAgainButton = new JButton(new ImageIcon(playAgainImage));
-        playAgainButton.setBounds(400, 600, 100, 100);  // Adjust position and size if needed
+        playAgainButton.setBounds(340, 600, 100, 100);  // Adjust position and size if needed
         playAgainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,6 +54,22 @@ public class WinnerFrame extends JFrame {
             }
         });
         getContentPane().add(playAgainButton);
+
+        // Load image for the exit button
+        ImageIcon exitIcon = new ImageIcon("./image/Exit.png");  // Adjust path if needed
+        Image exitImage = exitIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Adjust size if needed
+
+        // Create exit button and add image to it
+        JButton exitButton = new JButton(new ImageIcon(exitImage));
+        exitButton.setBounds(460, 600, 100, 100);  // Adjust position and size if needed
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Code to exit the game
+                System.exit(0);
+            }
+        });
+        getContentPane().add(exitButton);
 
         setVisible(true);
     }
