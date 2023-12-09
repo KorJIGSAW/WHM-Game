@@ -15,21 +15,20 @@ public class OpenCardFrame extends JFrame {
     private int visibleWidth = 30;
     private int visibleHeight = 30;
     private int WinnerPlayer2;
-
     // 이미지 최대 크기 정의
     private static final int IMAGE_MAX_WIDTH = 500;
     private static final int IMAGE_MAX_HEIGHT = 500;
-  
+
     JLabel imageLabel = null;
-  
-    public OpenCardFrame(Player player, Player nextPlayer, Theme theme){
+
+    public OpenCardFrame(Player player, Player nextPlayer, Theme theme, int isPlayerTurn) {
         this.player = player;
         this.nextPlayer = nextPlayer;
         this.tempPlayer = player;
         this.theme = theme;
         this.WinnerPlayer2 = 0;
-
-        setSize(900,900);
+        
+        setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
@@ -37,23 +36,23 @@ public class OpenCardFrame extends JFrame {
         JLabel themeLabel = new JLabel();
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setBounds(150, 20, 450, 50);
-        titleLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 30)); // 폰트와 크기 변경
         themeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         themeLabel.setBounds(100, 60, 600, 50);
-        themeLabel.setFont(new Font("Serif", Font.BOLD, 30));  // 폰트와 크기 변경
-    
+        themeLabel.setFont(new Font("Serif", Font.BOLD, 30)); // 폰트와 크기 변경
+
         // 변경점
         Card PlayerCardInfo = player.getLastCard();
 
         JLabel themeCountLabel = new JLabel();
         themeCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
         themeCountLabel.setBounds(150, 650, 400, 50);
-        themeCountLabel.setFont(new Font("Serif", Font.BOLD, 20)); 
+        themeCountLabel.setFont(new Font("Serif", Font.BOLD, 20));
         themeCountLabel.setVisible(false);
-        
+
         if (nextPlayer != null) {
             titleLabel.setText("첫번째 플레이어의 카드공개!");
-            themeLabel.setText("첫번째 플레이어의 테마는 " + theme.getPlayer1Theme() + "입니다.");            
+            themeLabel.setText("첫번째 플레이어의 테마는 " + theme.getPlayer1Theme() + "입니다.");
         } else {
             titleLabel.setText("두번째 플레이어의 카드공개!");
             themeLabel.setText("두번째 플레이어의 테마는 " + theme.getPlayer2Theme() + "입니다.");
@@ -62,7 +61,7 @@ public class OpenCardFrame extends JFrame {
         getContentPane().add(themeLabel);
 
         Card lastCard = player.getLastCard();
-        ImageIcon originalIcon = null; 
+        ImageIcon originalIcon = null;
 
         try {
             ArrayList<String> themes = new ArrayList<>(Arrays.asList("./image/사람/", "./image/동물/", "./image/나무/"));
@@ -78,8 +77,8 @@ public class OpenCardFrame extends JFrame {
 
             if (originalIcon != null) {
                 ImageIcon scaledIcon = new ImageIcon(
-                    originalIcon.getImage().getScaledInstance(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT, Image.SCALE_DEFAULT)
-                );
+                        originalIcon.getImage().getScaledInstance(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT,
+                                Image.SCALE_DEFAULT));
 
                 imageLabel = new JLabel(scaledIcon) {
                     @Override
@@ -112,7 +111,7 @@ public class OpenCardFrame extends JFrame {
                 getContentPane().add(downButton);
 
                 JButton revealButton = new JButton("한번에 공개");
-                revealButton.setBounds(660,400,150,50);
+                revealButton.setBounds(660, 400, 150, 50);
                 revealButton.addActionListener(e -> {
                     visibleWidth = IMAGE_MAX_WIDTH;
                     visibleHeight = IMAGE_MAX_HEIGHT;
@@ -120,17 +119,15 @@ public class OpenCardFrame extends JFrame {
 
                     // Opening first player
                     if (nextPlayer != null) {
-                        if(theme.getPlayer1Theme().equals("사람")){
+                        if (theme.getPlayer1Theme().equals("사람")) {
                             System.out.println(PlayerCardInfo.getPeopleCount());
                             Global.WinnerPlayer1 = PlayerCardInfo.getPeopleCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
-                        }
-                        else if(theme.getPlayer1Theme().equals("동물")){
+                        } else if (theme.getPlayer1Theme().equals("동물")) {
                             System.out.println(PlayerCardInfo.getAnimalCount());
                             Global.WinnerPlayer1 = PlayerCardInfo.getAnimalCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
-                        }
-                        else if(theme.getPlayer1Theme().equals("나무")){
+                        } else if (theme.getPlayer1Theme().equals("나무")) {
                             System.out.println(PlayerCardInfo.getTreeCount());
                             Global.WinnerPlayer1 = PlayerCardInfo.getTreeCount();
                             themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
@@ -138,17 +135,15 @@ public class OpenCardFrame extends JFrame {
                     }
                     // Opening second player
                     else {
-                        if(theme.getPlayer2Theme().equals("사람")){
+                        if (theme.getPlayer2Theme().equals("사람")) {
                             System.out.print(PlayerCardInfo.getPeopleCount());
                             WinnerPlayer2 = PlayerCardInfo.getPeopleCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
-                        }
-                        else if(theme.getPlayer2Theme().equals("동물")){
+                        } else if (theme.getPlayer2Theme().equals("동물")) {
                             System.out.print(PlayerCardInfo.getAnimalCount());
                             WinnerPlayer2 = PlayerCardInfo.getAnimalCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
-                        }
-                        else if(theme.getPlayer2Theme().equals("나무")){
+                        } else if (theme.getPlayer2Theme().equals("나무")) {
                             System.out.print(PlayerCardInfo.getTreeCount());
                             WinnerPlayer2 = PlayerCardInfo.getTreeCount();
                             themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
@@ -159,22 +154,32 @@ public class OpenCardFrame extends JFrame {
 
                 getContentPane().add(revealButton);
 
-                JButton nextButton = new JButton("다음 플레이어 카드 공개");
-                nextButton.setBounds(660,660,200,50);
+                // isPlayerTurn 첫 번째 플레이어의 턴인지 나타내는 변수. 1이면 first 2면 second 플레이어
+                JButton nextButton;
+                if (isPlayerTurn == 1){
+                    nextButton = new JButton("다음 플레이어 카드 공개");
+                }
+                else
+                    nextButton = new JButton("결과 보기");
+
+                nextButton.setBounds(660, 660, 200, 50);
+
                 nextButton.addActionListener(e -> {
                     if (visibleWidth == 500 && visibleHeight == 500) {
                         this.dispose();
-                        
+
                         if (nextPlayer != null) {
                             tempPlayer = nextPlayer;
-                            new OpenCardFrame(nextPlayer, null, theme);
-                        }
-                        else{
-                            //다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
+                            // 첫 번째 플레이어의 턴이 끝났으므로, isFirstPlayer를 false로 설정
+                            new OpenCardFrame(nextPlayer, null, theme, 2);
+                        } else {
+                            // 다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
                             new WinnerFrame(Global.WinnerPlayer1, WinnerPlayer2, theme);
-                        }                        
+                        }
                     }
                 });
+                // 버튼의 텍스트를 isFirstPlayer 값에 따라 변경
+
                 getContentPane().add(nextButton);
                 getContentPane().add(themeCountLabel);
 
@@ -185,13 +190,13 @@ public class OpenCardFrame extends JFrame {
             e.printStackTrace();
         }
     }
+
     // refresh the visible range of picture
     private void makeVisible(int range, boolean isWidth) {
         if (isWidth) {
             visibleWidth += range;
             visibleWidth = visibleWidth < 0 ? 0 : Math.min(visibleWidth, IMAGE_MAX_WIDTH);
-        }
-        else {
+        } else {
             visibleHeight += range;
             visibleHeight = visibleHeight < 0 ? 0 : Math.min(visibleHeight, IMAGE_MAX_HEIGHT);
         }

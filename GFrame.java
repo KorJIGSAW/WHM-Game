@@ -97,7 +97,7 @@ public class GFrame extends JFrame {
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new OpenCardFrame(player1, player2, theme); // OpenCard 실행
+                new OpenCardFrame(player1, player2, theme, 1); // OpenCard 실행
                 timerThread.interrupt(); // Stop the timer thread when moving to the next frame
                 dispose();
             }
