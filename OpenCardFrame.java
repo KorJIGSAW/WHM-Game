@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,6 +23,8 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OpenCardFrame extends JFrame {
     private Player player;
@@ -97,9 +100,7 @@ public class OpenCardFrame extends JFrame {
                 gainControl.setValue(volume);
 
                 clip.start();
-            } else {
-                System.out.println("음악 파일을 찾을 수 없습니다.");
-            }
+            } 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -152,44 +153,47 @@ public class OpenCardFrame extends JFrame {
 
                 JButton revealButton = new JButton("한번에 공개");
                 revealButton.setBounds(660, 400, 150, 50);
-                revealButton.addActionListener(e -> {
-                    visibleWidth = IMAGE_MAX_WIDTH;
-                    visibleHeight = IMAGE_MAX_HEIGHT;
-                    imageLabel.repaint();
+                revealButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        visibleWidth = IMAGE_MAX_WIDTH;
+                        visibleHeight = IMAGE_MAX_HEIGHT;
+                        imageLabel.repaint();
 
-                    // Opening first player
-                    if (nextPlayer != null) {
-                        if (theme.getPlayer1Theme().equals("사람")) {
-                            System.out.println(PlayerCardInfo.getPeopleCount());
-                            Global.WinnerPlayer1 = PlayerCardInfo.getPeopleCount();
-                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
-                        } else if (theme.getPlayer1Theme().equals("동물")) {
-                            System.out.println(PlayerCardInfo.getAnimalCount());
-                            Global.WinnerPlayer1 = PlayerCardInfo.getAnimalCount();
-                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
-                        } else if (theme.getPlayer1Theme().equals("나무")) {
-                            System.out.println(PlayerCardInfo.getTreeCount());
-                            Global.WinnerPlayer1 = PlayerCardInfo.getTreeCount();
-                            themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
+                        // Opening first player
+                        if (nextPlayer != null) {
+                            if (theme.getPlayer1Theme().equals("human")) {
+                                System.out.println(PlayerCardInfo.getPeopleCount());
+                                Global.WinnerPlayer1 = PlayerCardInfo.getPeopleCount();
+                                themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
+                            } else if (theme.getPlayer1Theme().equals("animal")) {
+                                System.out.println(PlayerCardInfo.getAnimalCount());
+                                Global.WinnerPlayer1 = PlayerCardInfo.getAnimalCount();
+                                themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
+                            } else if (theme.getPlayer1Theme().equals("tree")) {
+                                System.out.println(PlayerCardInfo.getTreeCount());
+                                Global.WinnerPlayer1 = PlayerCardInfo.getTreeCount();
+                                themeCountLabel.setText("첫번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
+                            }
                         }
-                    }
-                    // Opening second player
-                    else {
-                        if (theme.getPlayer2Theme().equals("사람")) {
-                            System.out.print(PlayerCardInfo.getPeopleCount());
-                            WinnerPlayer2 = PlayerCardInfo.getPeopleCount();
-                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
-                        } else if (theme.getPlayer2Theme().equals("동물")) {
-                            System.out.print(PlayerCardInfo.getAnimalCount());
-                            WinnerPlayer2 = PlayerCardInfo.getAnimalCount();
-                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
-                        } else if (theme.getPlayer2Theme().equals("나무")) {
-                            System.out.print(PlayerCardInfo.getTreeCount());
-                            WinnerPlayer2 = PlayerCardInfo.getTreeCount();
-                            themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
+                        // Opening second player
+                        else {
+                            if (theme.getPlayer2Theme().equals("human")) {
+                                System.out.print(PlayerCardInfo.getPeopleCount());
+                                WinnerPlayer2 = PlayerCardInfo.getPeopleCount();
+                                themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getPeopleCount() + "개");
+                            } else if (theme.getPlayer2Theme().equals("animal")) {
+                                System.out.print(PlayerCardInfo.getAnimalCount());
+                                WinnerPlayer2 = PlayerCardInfo.getAnimalCount();
+                                themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getAnimalCount() + "개");
+                            } else if (theme.getPlayer2Theme().equals("tree")) {
+                                System.out.print(PlayerCardInfo.getTreeCount());
+                                WinnerPlayer2 = PlayerCardInfo.getTreeCount();
+                                themeCountLabel.setText("두번째 플레이어 : " + PlayerCardInfo.getTreeCount() + "개");
+                            }
                         }
+                        themeCountLabel.setVisible(true);
                     }
-                    themeCountLabel.setVisible(true);
                 });
                 getContentPane().add(revealButton);
 

@@ -1,11 +1,22 @@
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
 
 public class GFrame extends JFrame {
     private Player player1;
@@ -18,7 +29,7 @@ public class GFrame extends JFrame {
     private Thread timerThread;
     private int timeLimit = 10;  // Set your time limit
 
-    public GFrame(List<Card> deck, Theme theme) {
+    public GFrame(List<Card> deck, Theme theme, Clip clip) {
         player1 = new Player("Player1");
         player2 = new Player("Player2");
         currentPlayer = player1;
@@ -37,7 +48,7 @@ public class GFrame extends JFrame {
         progressBar.setStringPainted(true);
         progressBar.setString(timeLimit + " 초");
 
-        timerThread = new TimerThread(timeLimit, progressBar, this);
+        timerThread = new TimerThread(timeLimit, progressBar, this, clip);
         timerThread.start();
 
         // Progress bar at the top
@@ -99,6 +110,7 @@ public class GFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new OpenCardFrame(player1, player2, theme, 1); // OpenCard 실행
                 timerThread.interrupt(); // Stop the timer thread when moving to the next frame
+                clip.stop(); // Clip 객체 제거
                 dispose();
             }
         });

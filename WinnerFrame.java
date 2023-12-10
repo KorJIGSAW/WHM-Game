@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class WinnerFrame extends JFrame {
+    private Clip clip; // Clip 변수를 필드로 선언
+
     public WinnerFrame(int player1, int player2, Theme theme) {
         System.out.println(player1);
         System.out.println(player2);
@@ -34,46 +36,47 @@ public class WinnerFrame extends JFrame {
 
         getContentPane().add(winnerLabel);
 
-        // Add firework images
-        ImageIcon fireworkIcon = new ImageIcon("./image/firework.png");  // Adjust path if needed
-        ImageIcon fireworkIcon2 = new ImageIcon("./image/firework2.png");  // Adjust path if needed
-        Image fireworkImage = fireworkIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // Adjust size if needed
-        Image fireworkImage2 = fireworkIcon2.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // Adjust size if needed
+        // 폭죽 이미지 추가
+        ImageIcon fireworkIcon = new ImageIcon("./image/firework.png");  // 필요에 따라 경로를 수정
+        ImageIcon fireworkIcon2 = new ImageIcon("./image/firework2.png");  // 필요에 따라 경로를 수정
+        Image fireworkImage = fireworkIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // 필요에 따라 크기를 조정
+        Image fireworkImage2 = fireworkIcon2.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);  // 필요에 따라 크기를 조정
 
         JLabel leftFireworkLabel = new JLabel(new ImageIcon(fireworkImage2));
-        leftFireworkLabel.setBounds(0, 50, 300, 300);  // Adjust position and size if needed
+        leftFireworkLabel.setBounds(0, 50, 300, 300);  // 필요에 따라 위치와 크기를 조정
         getContentPane().add(leftFireworkLabel);
 
         JLabel rightFireworkLabel = new JLabel(new ImageIcon(fireworkImage));
-        rightFireworkLabel.setBounds(600, 50, 300, 300);  // Adjust position and size if needed
+        rightFireworkLabel.setBounds(600, 50, 300, 300);  // 필요에 따라 위치와 크기를 조정
         getContentPane().add(rightFireworkLabel);
 
-        ImageIcon playAgainIcon = new ImageIcon("./image/play_again.jpg");  // Adjust path if needed
-        Image playAgainImage = playAgainIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Adjust size if needed
+        ImageIcon playAgainIcon = new ImageIcon("./image/play_again.jpg");  // 필요에 따라 경로를 수정
+        Image playAgainImage = playAgainIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // 필요에 따라 크기를 조정
 
         JButton playAgainButton = new JButton(new ImageIcon(playAgainImage));
-        playAgainButton.setBounds(340, 600, 100, 100);  // Adjust position and size if needed
+        playAgainButton.setBounds(340, 600, 100, 100);  // 필요에 따라 위치와 크기를 조정
         playAgainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                clip.stop();
                 Theme theme = new Theme();
                 new ThemeFrame(theme);
             }
         });
         getContentPane().add(playAgainButton);
 
-        // Load image for the exit button
-        ImageIcon exitIcon = new ImageIcon("./image/Exit.png");  // Adjust path if needed
-        Image exitImage = exitIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // Adjust size if needed
+        // 종료 버튼 이미지 로드
+        ImageIcon exitIcon = new ImageIcon("./image/Exit.png");  // 필요에 따라 경로를 수정
+        Image exitImage = exitIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);  // 필요에 따라 크기를 조정
 
-        // Create exit button and add image to it
+        // 종료 버튼 생성 및 이미지 추가
         JButton exitButton = new JButton(new ImageIcon(exitImage));
-        exitButton.setBounds(460, 600, 100, 100);  // Adjust position and size if needed
+        exitButton.setBounds(460, 600, 100, 100);  // 필요에 따라 위치와 크기를 조정
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Code to exit the game
+                // 게임 종료 코드
                 System.exit(0);
             }
         });
@@ -81,18 +84,17 @@ public class WinnerFrame extends JFrame {
 
         setVisible(true);
 
-        // Play ending music
+        // 엔딩 음악 재생
         try {
             File musicPath = new File("./music/WinnerEnding.wav");
             if (musicPath.exists()) {
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicPath);
-                Clip clip = AudioSystem.getClip();
+                clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
-                //Set Volume
+                // 볼륨 설정
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 float volume = -30.0f;
                 gainControl.setValue(volume);
-
                 clip.start();
             } else {
                 System.out.println("음악 파일을 찾을 수 없습니다.");

@@ -1,14 +1,31 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.*;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Scanner;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class ThemeFrame extends JFrame {
     private Theme theme;
     private HashMap<String, String> imagePaths;
+    private Clip clip; // Clip 변수를 추가
 
     public ThemeFrame(Theme theme) {
         this.theme = theme;
@@ -45,7 +62,8 @@ public class ThemeFrame extends JFrame {
                         theme.setPlayer2Theme(themeName);
                         System.out.println("플레이어 2의 테마가 " + themeName + "로 설정되었습니다."); // 로그 출력
                         ThemeFrame.this.dispose();
-                        new GFrame(Card.insert_card(), theme);
+                        new GFrame(Card.insert_card(), theme, clip);
+                        //clip.stop(); // 게임 시작 시 노래 중지
                     }
                 }
             });
@@ -56,6 +74,26 @@ public class ThemeFrame extends JFrame {
         }
 
         setVisible(true);
+
+        // ChooseTheme.wav 노래 재생
+        try {
+            File musicPath = new File("./music/ChooseTheme.wav");
+            if (musicPath.exists()) {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicPath);
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float volume = -30.0f;
+                gainControl.setValue(volume);
+
+                clip.start();
+            } else {
+                System.out.println("음악 파일을 찾을 수 없습니다.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
     }
 
     // imageNames.txt 파일에서 이미지 경로를 읽어옵니다.
