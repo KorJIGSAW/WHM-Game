@@ -3,75 +3,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.sampled.*;
-import javax.swing.event.*;
 
 public class Start extends JFrame {
-    private Theme theme;
     private Clip clip;
+    private FloatControl gainControl;
 
-    public Start() {
-        setSize(900, 600);
+    public Start(){
+        setTitle("Image Duel");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridBagLayout());
+        Container c = getContentPane();
+        c.setLayout(new BorderLayout());
 
-        // Play background music
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./music/GameStart.wav"));
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
+        // Center
+        ImageIcon imageIcon = new ImageIcon("./image/versus.png");
+        JLabel imageLabel = new JLabel(imageIcon);
+        c.add(imageLabel, BorderLayout.CENTER);
 
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float volume = -15.0f;
-            gainControl.setValue(volume);
+        // South
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(2, 3, 10, 10)); // 2 rows, 3 columns, 10 pixels gap
 
-            clip.start();
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
-
-        GridBagConstraints c = new GridBagConstraints();
-        Font buttonFont = new Font(Font.SANS_SERIF, Font.BOLD, 20);
-        Font titleFont = new Font("Lucida Calligraphy", Font.BOLD, 50);
-
-        // Game title
-        JLabel gameTitle = new JLabel("Image Duel");
-        gameTitle.setFont(titleFont);
-        gameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 5;
-        c.gridheight = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 0.5;
-        add(gameTitle, c);
-
-        // Create a new JPanel with BoxLayout for the music control buttons
-        JPanel musicControlPanel = new JPanel();
-        musicControlPanel.setLayout(new BoxLayout(musicControlPanel, BoxLayout.X_AXIS));
-
-        // Music control buttons
+        JButton startButton = new JButton("게임 시작");
+        JButton tutorialButton = new JButton("튜토리얼");
+        JButton exitButton = new JButton("나가기");
         JButton playButton = new JButton("음악 재생");
-        playButton.setFont(buttonFont);
-        playButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, playButton.getPreferredSize().height / 2));
-        musicControlPanel.add(playButton);
+        JButton stopButton = new JButton("음악 중지");
 
-        musicControlPanel.add(Box.createRigidArea(new Dimension(10, 0)));  // Add space
-
-        JButton stopButton = new JButton("음악 정지");
-        stopButton.setFont(buttonFont);
-        stopButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, stopButton.getPreferredSize().height / 2));
-        musicControlPanel.add(stopButton);
-        
-        // Create a new JPanel with GridLayout for the main buttons
-        JPanel mainButtonPanel = new JPanel(new GridLayout(1, 4, 10, 0));  // Set horizontal gap to 10
-
-        // Main buttons
-        JButton gameStartButton = new JButton("게임 시작");
-        gameStartButton.setFont(buttonFont);
-        gameStartButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, gameStartButton.getPreferredSize().height / 2));
-        gameStartButton.addActionListener(new ActionListener() {
+        //startButton ActionListener
+        startButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, startButton.getPreferredSize().height / 2));
+        startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 clip.stop();
@@ -80,36 +40,75 @@ public class Start extends JFrame {
                 dispose();
             }
         });
-        mainButtonPanel.add(gameStartButton);
 
-        JButton tutorialButton = new JButton("튜토리얼");
-        tutorialButton.setFont(buttonFont);
-        tutorialButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, tutorialButton.getPreferredSize().height / 2));
-        mainButtonPanel.add(tutorialButton);
-        
-        JButton exitButton = new JButton("나가기");
-        exitButton.setFont(buttonFont);
-        exitButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, exitButton.getPreferredSize().height / 2));
-        exitButton.addActionListener(new ActionListener() {
+        exitButton.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
             }
         });
-        mainButtonPanel.add(exitButton);
 
-        // Add the music control JPanel to the main button JPanel
-        mainButtonPanel.add(musicControlPanel);
+        playButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (clip != null && !clip.isRunning()){
+                    clip.start();
+                }
+            }
+        });
 
-        // Add the JPanel to the GridBagLayout
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 5; 
-        c.gridheight = 1;
-        c.weightx = 0.5;  // Decrease the weight
-        c.weighty = 0.25;  // Decrease the weight
-        add(mainButtonPanel, c);
+        stopButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (clip != null && clip.isRunning()){
+                    clip.stop();
+                }
+            }
+        });
 
+        // Music
+        playMusic("./music/GameStart.wav", -20f);
+
+        int volumeMax = (int) gainControl.getMaximum();
+        int volumeMin = (int) gainControl.getMinimum();
+        int volumeInit = (int) gainControl.getValue();
+
+        JSlider volumeSlider = new JSlider(volumeMin, volumeMax, volumeInit);
+        volumeSlider.addChangeListener(e -> {
+            JSlider source = (JSlider)e.getSource();
+            if (!source.getValueIsAdjusting()) {
+                if (clip != null && clip.isRunning()){
+                    int volume = source.getValue();
+                    if (volume >= volumeMin && volume <= volumeMax) {
+                        gainControl.setValue(volume); // change volume
+                    } 
+                }
+            }
+        });
+
+        buttonPanel.add(startButton);
+        buttonPanel.add(tutorialButton);
+        buttonPanel.add(exitButton);
+        buttonPanel.add(playButton);
+        buttonPanel.add(stopButton);
+        buttonPanel.add(volumeSlider);
+
+        c.add(buttonPanel, BorderLayout.SOUTH);
+
+        setSize(1400, 900); // Set size
         setVisible(true);
+    }
+
+    private void playMusic(String filePath, float volume) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(filePath));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume); // Reduce volume by 20 decibels.
+            clip.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
