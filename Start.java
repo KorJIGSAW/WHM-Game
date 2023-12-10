@@ -19,6 +19,11 @@ public class Start extends JFrame {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./music/GameStart.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float volume = -15.0f;
+            gainControl.setValue(volume);
+
             clip.start();
         } catch(Exception ex) {
             System.out.println("Error with playing sound.");
@@ -66,6 +71,15 @@ public class Start extends JFrame {
         JButton gameStartButton = new JButton("게임 시작");
         gameStartButton.setFont(buttonFont);
         gameStartButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, gameStartButton.getPreferredSize().height / 2));
+        gameStartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clip.stop();
+                Theme theme = new Theme();
+                new ThemeFrame(theme);
+                dispose();
+            }
+        });
         mainButtonPanel.add(gameStartButton);
 
         JButton tutorialButton = new JButton("튜토리얼");

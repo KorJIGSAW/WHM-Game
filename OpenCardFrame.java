@@ -1,11 +1,27 @@
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.nio.file.*;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class OpenCardFrame extends JFrame {
     private Player player;
@@ -19,7 +35,11 @@ public class OpenCardFrame extends JFrame {
     private static final int IMAGE_MAX_WIDTH = 500;
     private static final int IMAGE_MAX_HEIGHT = 500;
 
+    static Clip clip = null;
+    static boolean isPlaying = false;
+
     JLabel imageLabel = null;
+    JSlider volumeSlider;
 
     public OpenCardFrame(Player player, Player nextPlayer, Theme theme, int isPlayerTurn) {
         this.player = player;
@@ -27,7 +47,7 @@ public class OpenCardFrame extends JFrame {
         this.tempPlayer = player;
         this.theme = theme;
         this.WinnerPlayer2 = 0;
-        
+
         setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -62,6 +82,27 @@ public class OpenCardFrame extends JFrame {
 
         Card lastCard = player.getLastCard();
         ImageIcon originalIcon = null;
+        // 음악이 재생중인지 확인
+        // 음악재생
+        try {
+            File musicPath = new File("./music/Result.wav");
+            if (musicPath.exists() && !isPlaying) {
+                isPlaying = true;
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("./music/Result.wav"));
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float volume = -20.0f;
+                gainControl.setValue(volume);
+
+                clip.start();
+            } else {
+                System.out.println("음악 파일을 찾을 수 없습니다.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
 
         try {
             ArrayList<String> themes = new ArrayList<>(Arrays.asList("./image/사람/", "./image/동물/", "./image/나무/"));
@@ -74,7 +115,6 @@ public class OpenCardFrame extends JFrame {
                     originalIcon = null;
                 }
             }
-
             if (originalIcon != null) {
                 ImageIcon scaledIcon = new ImageIcon(
                         originalIcon.getImage().getScaledInstance(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT,
@@ -151,15 +191,23 @@ public class OpenCardFrame extends JFrame {
                     }
                     themeCountLabel.setVisible(true);
                 });
-
                 getContentPane().add(revealButton);
+
+                // 노래 소리 조절용 슬라이더 생성
+                volumeSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 50);
+                volumeSlider.setBounds(660, 730, 200, 50);
+                volumeSlider.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e) {
+                        adjustVolume();
+                    }
+                });
+                getContentPane().add(volumeSlider);
 
                 // isPlayerTurn 첫 번째 플레이어의 턴인지 나타내는 변수. 1이면 first 2면 second 플레이어
                 JButton nextButton;
-                if (isPlayerTurn == 1){
+                if (isPlayerTurn == 1) {
                     nextButton = new JButton("다음 플레이어 카드 공개");
-                }
-                else
+                } else
                     nextButton = new JButton("결과 보기");
 
                 nextButton.setBounds(660, 660, 200, 50);
@@ -175,6 +223,7 @@ public class OpenCardFrame extends JFrame {
                         } else {
                             // 다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
                             new WinnerFrame(Global.WinnerPlayer1, WinnerPlayer2, theme);
+                            clip.stop();
                         }
                     }
                 });
@@ -185,11 +234,11 @@ public class OpenCardFrame extends JFrame {
 
                 setVisible(true);
             }
-
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }   
 
     // refresh the visible range of picture
     private void makeVisible(int range, boolean isWidth) {
@@ -201,5 +250,16 @@ public class OpenCardFrame extends JFrame {
             visibleHeight = visibleHeight < 0 ? 0 : Math.min(visibleHeight, IMAGE_MAX_HEIGHT);
         }
         imageLabel.repaint();
+    }
+    private void adjustVolume(){
+        float volume = volumeSlider.getValue() / 100.0f;
+        if(clip != null){
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float minVolume = gainControl.getMinimum();
+            float maxVolume = gainControl.getMaximum();    
+            float range = maxVolume - minVolume;
+            float gain = (range * volume) + minVolume;
+            gainControl.setValue(gain);
+        }
     }
 }
