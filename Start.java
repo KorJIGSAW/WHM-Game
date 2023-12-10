@@ -66,6 +66,15 @@ public class Start extends JFrame {
             }
         });
 
+        tutorialButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                dispose();
+                new TutorialFrame();
+                clip.stop();
+            }
+        });
+
         // Music
         playMusic("./music/GameStart.wav", -20f);
 
