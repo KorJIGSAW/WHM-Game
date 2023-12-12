@@ -227,6 +227,7 @@ public class OpenCardFrame extends JFrame {
                         } else {
                             // 다음 플레이어가 없을 경우 WinnerFrame을 호출한다.
                             new WinnerFrame(Global.WinnerPlayer1, WinnerPlayer2, theme);
+                            isPlaying = false;
                             clip.stop();
                         }
                     }

@@ -61,6 +61,8 @@ public class GFrame extends JFrame {
         topPanel.add(progressBar);
         add(topPanel, BorderLayout.NORTH);
 
+        GFrame thisFrame = this;
+
         // Card buttons in the center
         JPanel centerPanel = new JPanel(new GridLayout(3, 3));
         buttons = new ArrayList<>();
@@ -93,6 +95,10 @@ public class GFrame extends JFrame {
                             btn.setEnabled(false);
                         }
                     }
+
+                    timerThread.interrupt();
+                    timerThread = new TimerThread(timeLimit, progressBar, thisFrame, clip);
+                    timerThread.start();
                 }
             });
 
